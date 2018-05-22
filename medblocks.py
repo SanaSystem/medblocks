@@ -179,7 +179,7 @@ def info(login='login.json'):
     if balance < 1:
         secho("[-] No Ether in account. Get ether by using the 'getether' command", fg='red')
     else:
-        echo("[o] Private keys are valid and are ready to create some medblocks!")
+        secho("[o] Private keys are valid and are ready to create some medblocks!", fg='yellow')
 
 @main.command()
 @click.option('--address','-a', help="Sends 1 test Eth to this account")
