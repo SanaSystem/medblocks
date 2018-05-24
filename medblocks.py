@@ -155,7 +155,66 @@ class Patient(object):
                 self.medblocks.append(record)
 
         self.medblocks = version_filter(self.medblocks)
+    
+    def write_medblock(self, ipfs_hash, encrypted_key, type=None):
+        data = {
+        'schema':'medblocks.medblock',
+        'version':'v0.01',
+        'type': type,
+        'ipfs_hash': ipfs_hash,
+        'patient': self.bio['bigchain']
+        }
+        echo("[+] Preparing CREATE transaction with {}...".format(str(data)[:10]))
+        tx = bdb.transactions.prepare(
+        operation='CREATE',
+        signers=current_user['bigchain'].public_key,
+        asset={'data': data})
         
+        echo("[+] Signing with private key")
+        signed_tx = bdb.transactions.fulfill(
+        tx,
+        private_keys=current_user['bigchain'].private_key
+        )
+        echo("[+] Creating MedBlock on the Blockchain")
+        sent = bdb.transactions.send(signed_tx)
+        echo("[+] Created! {}".format(sent))
+        self.transfer_medblock(sent, encrypted_key)
+    
+    def transfer_medblock(self, tx, encrypted_key):
+        
+        echo("[+] Transfering MedBlock to patient: {}".format(self.bio['bigchain']))
+        metadata = {
+            self.bio['bigchain']: encrypted_key
+        }
+        output = tx['outputs'][0]
+        transfer_input = {
+            'fulfillment': output['condition']['details'],
+            'fulfills': {
+                'output_index': 0,
+                'transaction_id': tx['id'],},
+            'owners_before': output['public_keys'],}
+        transfer_asset = {
+            'id':tx['id'],
+        }
+        echo("[+] Preparing TRANSFER transaction with encrypted key")
+        prepared_tx = bdb.transaction.prepare(
+            operation='TRANSFER',
+            asset=transfer_asset,
+            inputs=transfer_input,
+            recipients=self.bio['bigchain'],
+            metadata=metadata
+        )
+        echo("[+] Signing transaction")
+        signed = bdb.transaction.fulfill(
+            prepared_tx,
+            private_keys=current_user['bigchain'].private_key
+        )
+        echo("[+] Sending on the blockchain")
+        tx = bdb.transactions.send(signed)
+        echo(tx)
+        secho("[+] Transaction sent!", fg='green')
+
+
 def ipfs_connect():
     try:
         api = ipfsapi.connect('127.0.0.1', 5001)
