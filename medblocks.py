@@ -400,6 +400,7 @@ def list(address, phone):
 @click.option('--emergency','-e', help="IS EMERGENCY DATA", is_flag=True)
 @click.argument('file',type=click.Path(exists=True))
 def add(file, phone, address, emergency):
+    """Create a medblock with a file"""
     echo("[+] Fetching user data from the blockchain")
     patient = get_patient(address, phone)
     public_rsa = patient.bio['rsa']
