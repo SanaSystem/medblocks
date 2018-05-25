@@ -30,8 +30,6 @@ def main():
     Store your medical records securely                                         
     """
     
-
-
 def dump_user(user):
     """Converts user dictionary to json string"""
     bigchain_keys = user['bigchain']
@@ -439,7 +437,7 @@ def add(file, phone, address, emergency):
 @click.option('--all', is_flag=True)
 @click.argument('asset')
 def permit(asset, address, phone, all):
-        # Check if medblock belongs to user
+        """Permit someone to decrypt a medblock"""
         doctor = get_patient(address, phone)
         recorded_keys = doctor.get_keys(asset)
         if doctor.bio['bigchain'] in recorded_keys:
@@ -475,6 +473,7 @@ def permit(asset, address, phone, all):
 @click.argument('asset')
 @click.option('--output','-o',type=click.Path(), help='Output path for file')
 def get(asset, output):
+    """Retrive and decrypt medblock"""
     user_patient = Patient(public_key=current_user['bigchain'].public_key)
     keys = user_patient.get_keys(asset)
     if current_user['bigchain'].public_key in keys.keys():
