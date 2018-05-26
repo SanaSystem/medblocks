@@ -17,7 +17,7 @@ version = '0.01'
 emergency_address = '3gk3RzXuchFZrHuPjQQb6Aeyevs16t6e2GnSh7qkTUJ1'
 
 @click.group()
-@click.version_option(version, message="MedBlocks v0.01")
+@click.version_option(version, message=version)
 def main():
     """
     \b
