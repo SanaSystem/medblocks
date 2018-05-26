@@ -173,9 +173,8 @@ class Patient(object):
         self.non_keyed = non_keyed
         
     def has_permission(self, medblock):
-        for k in medblock['keys']:
-            if k == self.bio['bigchain']:
-                return medblock['keys'][k]
+        if current_user['bigchain'].public_key in medblock['keys'].keys():
+            return medblock['keys'][current_user['bigchain'].public_key]
         return False
     
     def get_owner(self, asset_id):
@@ -212,7 +211,7 @@ class Patient(object):
             if self.has_permission(medblock):
                 secho("Current user can decrypt", fg='green')
             else:
-                secho("Current user cannot decrypt")
+                secho("Current user cannot decrypt", fg='red')
             echo("----------------------------------------------------------------------------------")
 
     def write_medblock(self, ipfs_hash, encrypted_key, emergency_key=None, format=None):
