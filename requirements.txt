@@ -19,7 +19,7 @@ idna==2.6
 idna-ssl==1.0.1
 ipfsapi==0.4.2.post1
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 jsonschema==2.5.1
 logstats==0.2.1
 MarkupSafe==1.0
