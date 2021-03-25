@@ -35,7 +35,7 @@ pysha3==1.0.2
 python-rapidjson==0.5.2
 python-rapidjson-schema==0.1.1
 pytz==2018.4
-PyYAML==3.12
+PyYAML==5.4
 requests==2.18.4
 rethinkdb==2.3.0.post6
 shellescape==3.4.1
