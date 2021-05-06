@@ -12,7 +12,7 @@ click==6.7
 cryptoconditions==0.6.0.dev1
 cryptography==1.9
 Flask==1.0.2
-Flask-Cors==3.0.4
+Flask-Cors==3.0.9
 Flask-RESTful==0.3.6
 gunicorn==19.8.1
 idna==2.6
